@@ -24,7 +24,23 @@ function SpicyFoodList() {
     }))
   }
 
-  const foodList = foods.map((food) => (
+  const [filterBy, setFilterBy] = useState("All");
+
+  const filteredFoods = foods.filter((food) => {
+    if (filterBy === "All") {
+      return true;
+    } else {
+      return food.cuisine === filterBy;
+    }
+  })
+
+  function handleFilter(e) {
+    setFilterBy(e.target.value);
+  }
+
+
+
+  const foodList = filteredFoods.map((food) => (
     <li key={food.id}>
       {food.name} | Heat: {food.heatLevel} <button onClick={() => handleUpdateHeat(food.id)}>Add Heat Level</button> | Cuisine: {food.cuisine} | <button onClick={() => handleDeleteFood(food.id)}>Delete</button>
     </li>
@@ -33,6 +49,13 @@ function SpicyFoodList() {
   return (
     <div>
       <button onClick={handleAddFood}>Add New Food</button>
+      <select name="filter" onChange={handleFilter}>
+        <option value="All">All</option>
+        <option value="American">American</option>
+        <option value="Sichuan">Sichuan</option>
+        <option value="Thai">Thai</option>
+        <option value="Mexican">Mexican</option>
+      </select>
       <ul>{foodList}</ul>
     </div>
   );
